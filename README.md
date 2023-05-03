@@ -2,12 +2,18 @@
 
 thin fsharp's CsvHelper's wrapper
 
+
+## Usage
+
+customize [CsvRead0.csv](https://github.com/callmekohei/CsvHelperfs/blob/main/CsvRead0.fs) for your Csv File.
+
 ## sample 
 
 ### csv read 
 
+1. customize [CsvRead0.csv](https://github.com/callmekohei/CsvHelperfs/blob/main/CsvRead0.fs) for your Csv File.
 1. write [input.jsonc](https://github.com/callmekohei/CsvHelperfs/blob/main/Sample/input.jsonc)
-1. write code like blow...
+1. write code at main code - like blow...
 
 ```F#
 module Foo =
@@ -63,8 +69,6 @@ seq [{ Id = 1
                          Price = 250       
                          Memo = "yellow" }]
 ```
-
-
 ### csv read (header error)
 
 output 
