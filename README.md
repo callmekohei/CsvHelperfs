@@ -6,7 +6,7 @@ thin fsharp's CsvHelper's wrapper
 
 ### csv read 
 
-1. write input.jsonc(config file)
+1. write [input.jsonc](https://github.com/callmekohei/CsvHelperfs/blob/main/Sample/input.jsonc)
 1. write code like blow...
 
 ```F#
