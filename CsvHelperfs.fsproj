@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="./CsvCore/CsvHelperConfig.fs" />
+    <Compile Include="./CsvCore/CsvConfig.fs" />
+    <Compile Include="./CsvCore/CsvError.fs" />
+    <Compile Include="./CsvCore/CsvUtil.fs" />
+    <Compile Include="./CsvCore/CsvWrite.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="./CsvRead0.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="csvhelper" Version="30.0.1" />
+  </ItemGroup>
+
+</Project>
