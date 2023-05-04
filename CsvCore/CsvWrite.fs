@@ -50,7 +50,7 @@ module CsvWrite =
     }
 
 
-  let csvWriteFromIDictionaryArray
+  let csvWriteFromExpandoIDictionaryArray
     (csvWriteInfo   : CsvWriteInfo)
     (outputFilepath : string)
     (rcds           : IDictionary<string,obj> array)
