@@ -1,0 +1,39 @@
+{
+
+    "outputFileConfig" : {
+        "OutputFileName"                 : "animal.csv"
+      , "CodePage"                       : 65001  // utf8:65001, sjis:932
+      , "NewLineAppened"                 : false
+      , "TextAppended"                   : null
+      , "IsAppend"                       : false
+      , "LeaveOpen"                      : false
+    }
+
+    ,
+
+    // null is defalut
+    "csvHelperWriterConfig": {
+        "AllowComments"                       : null // default is true
+      , "BufferSize"                          : null // default is 0x1000
+      , "Comment"                             : null // default is #
+      , "Delimiter"                           : null // default is ,
+      , "Escape"                              : null // default is "
+      , "ExceptionMessagesContainRawData"     : null // default is true
+      , "HasHeaderRecord"                     : true // true or false
+      , "IgnoreReferences"                    : null // default is false
+      , "IncludePrivateMembers"               : null // default is false
+      , "InjectionCharacters"                 : []
+      , "InjectionEscapeCharacter"            : null
+      , "InjectionOptions"                    : null
+      , "IsNewLineSet"                        : null
+      , "MemberTypes"                         : null // default is properties 0:None 1:Properties 2: Fields
+      , "Mode"                                : null // default is RFC4180 0: RFC4180 1:Escape 2:NoEscape
+      , "NewLine"                             : null // default is \r\n
+      , "Quote"                               : null // default is "
+      , "ShouldQuote"                         : true // default is false
+      , "TrimOptions"                         : 0    // 0: none , 1: Trim, 2:InsideQuotes , 3: Trim and InsideQuotes
+      , "UseNewObjectForNullReferenceMembers" : null
+      , "Validate"                            : null
+    }
+
+}

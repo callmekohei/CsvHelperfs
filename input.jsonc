@@ -32,7 +32,7 @@
     , "MaxFieldSize"                    : null // default is 0
     , "MemberTypes"                     : null // default is Properties 0: None 1: Properties 2:Fields
     , "Mode"                            : null // default is RFC4180 0: RFC4180 1: Escape 2: NoEscape
-    , "NewLine"                         : "\n" // default is \r\n,\r,\n
+    , "NewLine"                         : null // default is \r\n,\r,\n
     , "ProcessFieldBufferSize"          : null // default is 1024
     , "Quote"                           : null // default is "
     , "TrimOptions"                     : 0    // 0: none , 1: Trim, 2:InsideQuotes , 3: Trim and InsideQuotes
@@ -44,7 +44,7 @@
   "inputErrorFileConfig" : {
 
     "outputFileConfig" : {
-        "OutputfileName"                 : "CsvError.csv"
+        "OutputFileName"                 : "CsvError.csv"
       , "CodePage"                       : 65001  // utf8:65001, sjis:932
       , "NewLineAppened"                 : false
       , "TextAppended"                   : null
