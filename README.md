@@ -96,7 +96,7 @@ module Foo =
     // Idictionary => ExpandoObject.IDictionary
     let ToExpandoIDictionary (idic:IDictionary<string,obj>)  =
       let expando = new ExpandoObject()
-      let expandoIDic = expando : IDictionary<string,obj>
+      let expandoIDic = expando :> IDictionary<string,obj>
       idic.Keys |> Seq.iter(fun k -> expandoIDic.Add(k,idic.Item(k)))
       expandoIDic
 
