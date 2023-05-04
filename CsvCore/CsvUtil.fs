@@ -10,20 +10,20 @@ namespace CsvHelperfs
 module CsvUtil =
 
   open System
-  open Microsoft.FSharp.Reflection
+  open System.Reflection
   open CsvHelper
 
 
   let csvHeaderValidate<'T,'U> (args: HeaderValidatedArgs) =
     let requiredHeaders =
-      typeof<'T>
-      |> FSharpType.GetRecordFields
-      |> Array.filter(fun x -> Array.isEmpty (x.GetCustomAttributes(typeof<'U>,true)) )
+      // The value__ field is removed by specifying we only want the public, static fields.
+      typeof<'T>.GetFields(BindingFlags.Public ||| BindingFlags.Static)
+      |> Array.filter(fun fieldInfo -> isNull (Attribute.GetCustomAttribute(fieldInfo,typeof<'U>)))
       |> Array.map(fun x -> x.Name)
     let optionalHeaders =
-      typeof<'T>
-      |> FSharpType.GetRecordFields
-      |> Array.filter(fun x -> Array.isEmpty (x.GetCustomAttributes(typeof<'U>,true)) |> not )
+      // The value__ field is removed by specifying we only want the public, static fields.
+      typeof<'T>.GetFields(BindingFlags.Public ||| BindingFlags.Static)
+      |> Array.filter(fun fieldInfo -> isNull (Attribute.GetCustomAttribute(fieldInfo,typeof<'U>)) |> not )
       |> Array.map(fun x -> x.Name)
     let headers = args.Context.Parser.Record
     let missingHeaders = requiredHeaders |> Array.except headers |> Array.except optionalHeaders

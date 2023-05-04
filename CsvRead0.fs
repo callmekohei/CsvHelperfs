@@ -15,15 +15,15 @@ module CsvRead0 =
   open CsvHelper.Configuration
   open CsvUtil
 
-  // for header
-  type MyRealCsvOptional () = inherit Attribute()
+  // for header validate (required if do header validate)
+  // for csv index (optional)
+  type OptionalColumn () = inherit Attribute()
   [<RequireQualifiedAccess>]
-  type MyRealCsv = {
-    Id    : int
-    Name  : string
-    Price : int
-    [<MyRealCsvOptional>] Memo : string  // Optional header
-  }
+  type MyRealCsv =
+    | Id    = 0
+    | Name  = 1
+    | Price = 2
+    | [<OptionalColumn>] Memo = 3
 
 
   [<CLIMutable>]
@@ -41,16 +41,20 @@ module CsvRead0 =
     let sb = Text.StringBuilder()
 
     do
-      this.Map(fun (x:MyCsv) -> x.Id ).Convert(this.MyValidate)  |> ignore
-      this.Map(fun (x:MyCsv) -> x.Name ).Name("Name")            |> ignore
-      this.Map(fun (x:MyCsv) -> x.Price ).Name("Price")          |> ignore
-      this.Map(fun (x:MyCsv) -> x.Memo ).Optional().Name("Memo") |> ignore
 
-    member this.MyValidate:ConvertFromStringArgs -> int =
+      // validate any fields first mapping
+      this.Map(fun (x:MyCsv) -> x.Id ).Convert(this.ValidateAnyFields)  |> ignore
+
+      this.Map(fun (x:MyCsv) -> x.Name ).Name("Name")                   |> ignore
+      this.Map(fun (x:MyCsv) -> x.Price ).Index(int MyRealCsv.Price)    |> ignore
+      this.Map(fun (x:MyCsv) -> x.Memo ).Optional().Name("Memo")        |> ignore
+
+    member this.ValidateAnyFields:ConvertFromStringArgs -> int =
       fun rowObj ->
         sb.Clear() |> ignore
-        let x = rowObj.Row.GetField(0) |> int
 
+        // validate any fields
+        let x = rowObj.Row.GetField( int MyRealCsv.Id ) |> int
         if x > 2
         then sb.Append($" Id is invalid(over 3) ") |> ignore
 
@@ -58,7 +62,7 @@ module CsvRead0 =
         then raise <| MyCsvException (sb.ToString())
         x
 
-  // set in code
+  // set reader config in code
   let private csvReaderConfig (cfg:CsvHelperReaderConfig) =
 
     CsvHelperConfig.csvReaderConfigImpl cfg
@@ -71,9 +75,9 @@ module CsvRead0 =
       // x.GetConstructor                  <- (fun x -> Reflection.ConstructorInfo )
       // x.GetDynamicPropertyName          <- (fun x -> "")
 
-      (* exists header *)
+      (* validate header *)
       x.HeaderValidated <- (fun (args: HeaderValidatedArgs) ->
-        csvHeaderValidate<MyRealCsv,MyRealCsvOptional> args
+        csvHeaderValidate<MyRealCsv,OptionalColumn> args
       )
 
       // x.MissingFieldFound               <- (fun x -> printfn "hello world")
