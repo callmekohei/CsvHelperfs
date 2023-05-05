@@ -93,13 +93,6 @@ module Foo =
 
   async {
 
-    // Idictionary => ExpandoObject.IDictionary
-    let ToExpandoIDictionary (idic:IDictionary<string,obj>)  =
-      let expando = new ExpandoObject()
-      let expandoIDic = expando :> IDictionary<string,obj>
-      idic.Keys |> Seq.iter(fun k -> expandoIDic.Add(k,idic.Item(k)))
-      expandoIDic
-
     let fp_jsonc   = "./../CsvHelperfs/output.jsonc"
     // idic is ExpandoObject.IDictionary or DapperRow
     let idic =
@@ -107,7 +100,7 @@ module Foo =
         Map([("name",box "cat")   ; ("size",box "small") ]) |> Map.toSeq |> dict
         Map([("name",box "horse") ; ("size",box "big") ])   |> Map.toSeq |> dict
       }
-      |> Seq.map ToExpandoIDictionary
+      |> Seq.map CsvUtil.asExpandoIDictionary
       |> Seq.toArray
 
     let csvWriteInfo =

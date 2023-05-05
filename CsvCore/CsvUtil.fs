@@ -10,6 +10,8 @@ namespace CsvHelperfs
 module CsvUtil =
 
   open System
+  open System.Collections.Generic
+  open System.Dynamic
   open System.Reflection
   open CsvHelper
 
@@ -48,3 +50,11 @@ module CsvUtil =
         |> Async.Ignore
 
     }
+
+
+  // Idictionary => ExpandoObject.IDictionary
+  let asExpandoIDictionary (idic:IDictionary<string,obj>)  =
+    let expando = new ExpandoObject()
+    let expandoIDic = expando :> IDictionary<string,obj>
+    idic.Keys |> Seq.iter(fun k -> expandoIDic.Add(k,idic.Item(k)))
+    expandoIDic
