@@ -35,21 +35,8 @@ module CsvUtil =
 
 
   let skipRows (csv:CsvReader) i =
-    async {
-
-      let skipRow (csv:CsvReader) =
-        async {
-          let! _ = csv.ReadAsync() |> Async.AwaitTask
-          return ()
-        }
-
-      do!
-        [1..i]
-        |> Seq.map (fun _ -> skipRow csv )
-        |> Async.Sequential
-        |> Async.Ignore
-
-    }
+    for _ = 0 to i - 1 do
+      csv.Read() |> ignore
 
 
   // Idictionary => ExpandoObject.IDictionary
