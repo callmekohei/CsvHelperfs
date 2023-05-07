@@ -7,8 +7,8 @@ thin fsharp's CsvHelper's wrapper
 
 ### A.Read csv 
 
-1. customize [CsvRead0.csv](https://github.com/callmekohei/CsvHelperfs/blob/main/CsvRead0.fs) for your Csv File.
-1. write [input.jsonc](https://github.com/callmekohei/CsvHelperfs/blob/main/input.jsonc)
+1. open 'CsvHelper.fs' at main code
+1. customize 'CsvRead0.csv' and 'input.jsonc' (see Sample folder)
 1. write code at main code - like blow...
 
 ```F#
@@ -21,8 +21,8 @@ module Foo =
 
   async {
 
-    let fp_jsonc   = "./../CsvHelperfs/input.jsonc"
-    let fp_csv     = "./../CsvHelperfs/fruits.csv"
+    let fp_jsonc   = "./Sample/input.jsonc"
+    let fp_csv     = "./Sample/fruits.csv"
     let codepage = 65001 // utf8
 
     let csvReadInfo =
@@ -79,7 +79,8 @@ output(CsvError.csv)
 
 ### B.Write csv 
 
-1. write [output.jsonc](https://github.com/callmekohei/CsvHelperfs/blob/main/output.jsonc)
+1. open 'CsvHelper.fs' at main code
+1. customize 'output.jsonc' (see Sample folder)
 1. write code at main code - like blow...
 
 ```F#
@@ -93,7 +94,8 @@ module Foo =
 
   async {
 
-    let fp_jsonc   = "./../CsvHelperfs/output.jsonc"
+    let fp_jsonc   = "./Sample/output.jsonc"
+
     // idic is ExpandoObject.IDictionary or DapperRow
     let idic =
       seq {
@@ -122,4 +124,30 @@ output(animal.csv)
 "name","size"
 "cat","small"
 "horse","big"
+```
+
+
+### C.Other(Read Json) 
+
+the way of read direct record
+
+```fsharp
+// record (wrap outer record)
+type ExtraInputFileConfigJson = { ExtraInputFileConfig : ExtraInputFileConfig }
+and ExtraInputFileConfig =
+  {
+    InputFolderName      : string
+    CheckCsvFiles        : bool
+    LimitRecords         : Nullable<int>
+    IgnoreInvalidRecords : bool
+  }
+
+// extract
+open System.Text.Json
+let jsonText = ""
+let opt = JsonSerializerOptions()
+opt.ReadCommentHandling <- JsonCommentHandling.Skip
+let x = JsonSerializer.Deserialize<ExtraInputFileConfigJson>(jsonText, opt) |> fun a -> a.ExtraInputFileConfig
+
+x.InputFolderName |> printfn "%s"
 ```

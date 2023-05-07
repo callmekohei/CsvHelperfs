@@ -23,10 +23,10 @@ type OutputFileConfig =
 [<CLIMutable>]
 type InputFileConfig =
   {
-    InputFileName : string
-    CodePage      : Nullable<int>
-    LeaveOpen     : Nullable<bool>
-    skipRows      : Nullable<int>
+    InputFileNameRegexPattern : string
+    CodePage                  : Nullable<int>
+    LeaveOpen                 : Nullable<bool>
+    SkipRows                  : Nullable<int>
   }
 
 

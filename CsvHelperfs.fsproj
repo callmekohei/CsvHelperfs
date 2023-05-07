@@ -6,15 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="./CsvCore/CsvHelperConfig.fs" />
-    <Compile Include="./CsvCore/CsvConfig.fs" />
-    <Compile Include="./CsvCore/CsvError.fs" />
-    <Compile Include="./CsvCore/CsvUtil.fs" />
-    <Compile Include="./CsvCore/CsvWrite.fs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="./CsvRead0.fs" />
+    <Compile Include="./CsvHelperConfig.fs" />
+    <Compile Include="./CsvConfig.fs" />
+    <Compile Include="./CsvError.fs" />
+    <Compile Include="./CsvUtil.fs" />
+    <Compile Include="./CsvWrite.fs" />
   </ItemGroup>
 
   <ItemGroup>
