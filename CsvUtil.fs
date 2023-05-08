@@ -34,9 +34,20 @@ module CsvUtil =
     then failwith <| $"""(Invalid Header) short: {String.Join(" ",missingHeaders)}. invalid: {String.Join(" ",unexpectedHeaders)}"""
 
 
-  let skipRows (csv:CsvReader) i =
-    for _ = 0 to i - 1 do
-      csv.Read() |> ignore
+  let skipRows (csv: CsvReader) i =
+    let skipRow _ =
+      async {
+        return! csv.ReadAsync() |> Async.AwaitTask
+      }
+
+    let sequential = Async.Sequential >> Async.Ignore
+
+    async {
+      do!
+        seq { 1..i }
+        |> Seq.map skipRow
+        |> sequential
+    }
 
 
   // Idictionary => ExpandoObject.IDictionary
