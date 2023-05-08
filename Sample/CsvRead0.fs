@@ -217,8 +217,8 @@ module CsvRead0 =
       | false ->
 
         // skip rows
-        if cfg.inputFileConfig.skipRows.HasValue
-        then do! CsvUtil.skipRows csv cfg.inputFileConfig.skipRows.Value
+        if cfg.inputFileConfig.SkipRows.HasValue
+        then do! CsvUtil.skipRows csv cfg.inputFileConfig.SkipRows.Value
 
         do! readCsvByHand csv finfo arrGood arrBad
 
