@@ -32,7 +32,7 @@ module Foo =
       JsonSerializer.Deserialize<CsvHelperfs.CsvReadInfo>(stream, opt)
 
     let finfo = FileInfo(Path.Combine(Directory.GetCurrentDirectory(),fp_csv))
-    let sr = new StreamReader(finfo.FullName,Encoding.GetEncoding(codepage))
+    use sr = new StreamReader(finfo.FullName,Encoding.GetEncoding(codepage))
 
     // read csv
     let! csvBad, csvGood = CsvRead0.readCsv csvReadInfo finfo sr
@@ -45,7 +45,6 @@ module Foo =
     do! csvBad |> Seq.toArray |> CsvWrite.csvWriteFromRecordArray csvReadInfo.inputErrorFileConfig fp_errCsv
 
   }
-
   |> Async.RunSynchronously
 ```
 
@@ -115,7 +114,6 @@ module Foo =
     do! idic |> CsvWrite.csvWriteFromExpandoIDictionaryArray csvWriteInfo finfo.FullName
 
   }
-
   |> Async.RunSynchronously
 ```
 
@@ -127,27 +125,37 @@ output(animal.csv)
 ```
 
 
-### C.Other(Read Json) 
-
-the way of read direct record
+### C.Other( read records directly from json) 
 
 ```fsharp
-// record (wrap outer record)
-type ExtraInputFileConfigJson = { ExtraInputFileConfig : ExtraInputFileConfig }
-and ExtraInputFileConfig =
-  {
-    InputFolderName      : string
-    CheckCsvFiles        : bool
-    LimitRecords         : Nullable<int>
-    IgnoreInvalidRecords : bool
+module Foo =
+
+  open System.IO
+  open System.Text.Json
+
+  type ExtraInputFileConfigJson = { ExtraInputFileConfig : ExtraInputFileConfig }
+  and ExtraInputFileConfig =
+    {
+      InputFolderName      : string
+      CheckCsvFiles        : bool
+      LimitRecords         : System.Nullable<int>
+      IgnoreInvalidRecords : bool
+    }
+
+  async{
+
+    let fp_jsonc   = "./Sample/input.jsonc"
+    use stream = new FileStream(fp_jsonc,FileMode.Open,FileAccess.Read)
+    let opt = JsonSerializerOptions()
+    opt.ReadCommentHandling <- JsonCommentHandling.Skip
+    let x = JsonSerializer.Deserialize<ExtraInputFileConfigJson>(stream, opt) |> fun a -> a.ExtraInputFileConfig
+    x.InputFolderName |> printfn "%s"
+
   }
+  |> Async.RunSynchronously
+```
 
-// extract
-open System.Text.Json
-let jsonText = ""
-let opt = JsonSerializerOptions()
-opt.ReadCommentHandling <- JsonCommentHandling.Skip
-let x = JsonSerializer.Deserialize<ExtraInputFileConfigJson>(jsonText, opt) |> fun a -> a.ExtraInputFileConfig
-
-x.InputFolderName |> printfn "%s"
+output(console)
+```
+./Foo
 ```
