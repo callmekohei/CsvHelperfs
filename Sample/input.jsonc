@@ -1,11 +1,28 @@
 {
 
+  "ExtraInputFileConfig" : {
+      "InputFolderName"      : "./Foo"
+    , "CheckCsvFiles"        : false
+    , "LimitRecords"         : null
+    , "IgnoreInvalidRecords" : false
+  }
+
+  ,
+
+  "ExtraInputErrorFileConfig" : {
+        "OutputFolderName"         : "./"
+      , "OutputFileNameDateFormat" : null // add file format at file name e.g. "yyyyMMdd_HHmmss"
+      , "isPrefixDateFormat"       : true // true: prefix, false : suffix
+    }
+
+  ,
+
   "inputFileConfig" : {
 
-      "InputFileName" : "fruits.csv"
+      "InputFileName" : "fruits.csv" // e.g. if with regex : ^foo\\.csv$
     , "CodePage"      : 65001 // utf8:65001, sjis:932
     , "LeaveOpen"     : false // default is false
-    , "SkipRows"      : null  // null is no skip
+    , "SkipRows"      : null  // not skip if null
 
   }
 
@@ -46,8 +63,8 @@
     "outputFileConfig" : {
         "OutputFileName"                 : "CsvError.csv"
       , "CodePage"                       : 65001  // utf8:65001, sjis:932
-      , "NewLineAppened"                 : false
-      , "TextAppended"                   : null
+      , "NewLineAppened"                 : false  // add New Line at last record if true
+      , "TextAppended"                   : null   // e.g. "EOF"
       , "IsAppend"                       : false
       , "LeaveOpen"                      : false
     }
