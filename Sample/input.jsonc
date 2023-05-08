@@ -1,35 +1,36 @@
 {
+  "ExtraInput" : {
 
-  "ExtraInputFileConfig" : {
-      "InputFolderName"      : "./Foo"
-    , "CheckCsvFiles"        : false
-    , "LimitRecords"         : null
-    , "IgnoreInvalidRecords" : false
-  }
+    "ExtraInputFileConfig" : {
+        "CheckCsvFiles"        : false
+      , "LimitRecords"         : null
+      , "IgnoreInvalidRecords" : false
+    }
 
-  ,
+    ,
 
-  "ExtraInputErrorFileConfig" : {
-        "OutputFolderName"         : "./"
-      , "OutputFileNameDateFormat" : null // add file format at file name e.g. "yyyyMMdd_HHmmss"
-      , "isPrefixDateFormat"       : true // true: prefix, false : suffix
+    "ExtraInputErrorFileConfig" : {
+          "OutputFileNameDateFormat" : null // add file format at file name e.g. "yyyyMMdd_HHmmss"
+        , "IsPrefixDateFormat"       : true // true: prefix, false : suffix
+      }
     }
 
   ,
 
-  "inputFileConfig" : {
+  "InputFileConfig" : {
 
-      "InputFileName" : "fruits.csv" // e.g. if with regex : ^foo\\.csv$
-    , "CodePage"      : 65001 // utf8:65001, sjis:932
-    , "LeaveOpen"     : false // default is false
-    , "SkipRows"      : null  // not skip if null
+      "InputFolderName" : "./Sample"
+    , "InputFileName"   : "fruits.csv" // e.g. if with regex : ^foo\\.csv$
+    , "CodePage"        : 65001 // utf8:65001, sjis:932
+    , "LeaveOpen"       : false // default is false
+    , "SkipRows"        : null  // not skip if null
 
   }
 
   ,
 
   // null is defalut
-  "csvHelperReaderConfig" : {
+  "CsvHelperReaderConfig" : {
       "AllowComments"                   : null // default is true
     , "BufferSize"                      : null // default is 0x1000
     , "CacheFields"                     : null // default is false
@@ -58,21 +59,22 @@
 
   ,
 
-  "inputErrorFileConfig" : {
+  "InputErrorFileConfig" : {
 
-    "outputFileConfig" : {
-        "OutputFileName"                 : "CsvError.csv"
-      , "CodePage"                       : 65001  // utf8:65001, sjis:932
-      , "NewLineAppened"                 : false  // add New Line at last record if true
-      , "TextAppended"                   : null   // e.g. "EOF"
-      , "IsAppend"                       : false
-      , "LeaveOpen"                      : false
+    "OutputFileConfig" : {
+        "OutputFolderName" : ""
+      , "OutputFileName"   : "CsvError.csv"
+      , "CodePage"         : 65001  // utf8:65001, sjis:932
+      , "NewLineAppened"   : false  // add New Line at last record if true
+      , "TextAppended"     : null   // e.g. "EOF"
+      , "IsAppend"         : false
+      , "LeaveOpen"        : false
     }
 
     ,
 
     // null is defalut
-    "csvHelperWriterConfig": {
+    "CsvHelperWriterConfig": {
         "AllowComments"                       : null // default is true
       , "BufferSize"                          : null // default is 0x1000
       , "Comment"                             : null // default is #

@@ -205,20 +205,20 @@ module CsvRead0 =
       let arrGood = new ResizeArray<MyCsv>()
 
       let csv =
-        if cfg.inputFileConfig.LeaveOpen.HasValue
-        then new CsvReader( streamReader , csvReaderConfig(cfg.csvHelperReaderConfig),cfg.inputFileConfig.LeaveOpen.Value)
-        else new CsvReader( streamReader , csvReaderConfig(cfg.csvHelperReaderConfig))
+        if cfg.InputFileConfig.LeaveOpen.HasValue
+        then new CsvReader( streamReader , csvReaderConfig(cfg.CsvHelperReaderConfig),cfg.InputFileConfig.LeaveOpen.Value)
+        else new CsvReader( streamReader , csvReaderConfig(cfg.CsvHelperReaderConfig))
 
       // add any ClassMap if Multiple Record type e.g. <classmap1> , <classmap2> ...
       let _ = csv.Context.RegisterClassMap<MyCsvReaderMap>()
 
-      match cfg.csvHelperReaderConfig.HasHeaderRecord with
+      match cfg.CsvHelperReaderConfig.HasHeaderRecord with
       // headerless
       | false ->
 
         // skip rows
-        if cfg.inputFileConfig.SkipRows.HasValue
-        then do! CsvUtil.skipRows csv cfg.inputFileConfig.SkipRows.Value
+        if cfg.InputFileConfig.SkipRows.HasValue
+        then do! CsvUtil.skipRows csv cfg.InputFileConfig.SkipRows.Value
 
         do! readCsvByHand csv finfo arrGood arrBad
 

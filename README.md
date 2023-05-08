@@ -22,27 +22,29 @@ module Foo =
   async {
 
     let fp_jsonc   = "./Sample/input.jsonc"
-    let fp_csv     = "./Sample/fruits.csv"
-    let codepage = 65001 // utf8
 
+    // read Config from Json
     let csvReadInfo =
       use stream = new FileStream(fp_jsonc,FileMode.Open,FileAccess.Read)
       let opt = JsonSerializerOptions()
       opt.ReadCommentHandling <- JsonCommentHandling.Skip
       JsonSerializer.Deserialize<CsvHelperfs.CsvReadInfo>(stream, opt)
 
-    let finfo = FileInfo(Path.Combine(Directory.GetCurrentDirectory(),fp_csv))
-    use sr = new StreamReader(finfo.FullName,Encoding.GetEncoding(codepage))
-
     // read csv
+    let folderPath       = csvReadInfo.InputFileConfig.InputFolderName
+    let filePath         = csvReadInfo.InputFileConfig.InputFileName
+    let finfo            = FileInfo(Path.Combine(Directory.GetCurrentDirectory(), folderPath, filePath))
+    let codepage         = csvReadInfo.InputFileConfig.CodePage.Value
+    use sr               = new StreamReader(finfo.FullName,Encoding.GetEncoding(codepage))
     let! csvBad, csvGood = CsvRead0.readCsv csvReadInfo finfo sr
 
     printfn "%A" csvBad
     printfn "%A" csvGood
 
-    // write csv
-    let fp_errCsv = Path.Combine(Directory.GetCurrentDirectory(),csvReadInfo.inputErrorFileConfig.outputFileConfig.OutputFileName)
-    do! csvBad |> Seq.toArray |> CsvWrite.csvWriteFromRecordArray csvReadInfo.inputErrorFileConfig fp_errCsv
+    // write csv of error log
+    let filePath' = csvReadInfo.InputErrorFileConfig.OutputFileConfig.OutputFileName
+    let fp_errCsv = Path.Combine(Directory.GetCurrentDirectory(),filePath')
+    do! csvBad |> Seq.toArray |> CsvWrite.csvWriteFromRecordArray csvReadInfo.InputErrorFileConfig fp_errCsv
 
   }
   |> Async.RunSynchronously
@@ -93,9 +95,7 @@ module Foo =
 
   async {
 
-    let fp_jsonc   = "./Sample/output.jsonc"
-
-    // idic is ExpandoObject.IDictionary or DapperRow
+    // date is DapperRow:IDictionary or ExpandoObject.IDictionary
     let idic =
       seq {
         Map([("name",box "cat")   ; ("size",box "small") ]) |> Map.toSeq |> dict
@@ -104,14 +104,19 @@ module Foo =
       |> Seq.map CsvUtil.asExpandoIDictionary
       |> Seq.toArray
 
+    let fp_jsonc   = "./Sample/output.jsonc"
+
+    // read Config from Json
     let csvWriteInfo =
       use stream = new FileStream(fp_jsonc,FileMode.Open,FileAccess.Read)
       let opt = JsonSerializerOptions()
       opt.ReadCommentHandling <- JsonCommentHandling.Skip
       JsonSerializer.Deserialize<CsvHelperfs.CsvWriteInfo>(stream, opt)
 
-    let finfo = FileInfo(Path.Combine(Directory.GetCurrentDirectory(),csvWriteInfo.outputFileConfig.OutputFileName))
-    do! idic |> CsvWrite.csvWriteFromExpandoIDictionaryArray csvWriteInfo finfo.FullName
+    // write csv
+    let filePath = csvWriteInfo.OutputFileConfig.OutputFileName
+    let finfo    = FileInfo(Path.Combine(Directory.GetCurrentDirectory(),filePath))
+    do! CsvWrite.csvWriteFromExpandoIDictionaryArray csvWriteInfo finfo.FullName idic
 
   }
   |> Async.RunSynchronously
@@ -125,7 +130,7 @@ output(animal.csv)
 ```
 
 
-### C.Other( read records directly from json) 
+### C. Extra Config
 
 ```fsharp
 module Foo =
@@ -134,23 +139,36 @@ module Foo =
   open System.Text.Json
 
   // wrap dummy record if read records directly from json
-  type ExtraInputFileConfigJson = { ExtraInputFileConfig : ExtraInputFileConfig }
+  type ExtraInputJson = {ExtraInput:ExtraInput}
+  and ExtraInput =
+    {
+      ExtraInputFileConfig      : ExtraInputFileConfig
+      ExtraInputErrorFileConfig : ExtraInputErrorFileConfig
+    }
   and ExtraInputFileConfig =
     {
-      InputFolderName      : string
       CheckCsvFiles        : bool
-      LimitRecords         : System.Nullable<int>
+      LimitRecords         : Nullable<int>
       IgnoreInvalidRecords : bool
+    }
+  and ExtraInputErrorFileConfig =
+    {
+      OutputFileNameDateFormat : string
+      IsPrefixDateFormat       : bool
     }
 
   async{
 
     let fp_jsonc   = "./Sample/input.jsonc"
-    use stream = new FileStream(fp_jsonc,FileMode.Open,FileAccess.Read)
-    let opt = JsonSerializerOptions()
-    opt.ReadCommentHandling <- JsonCommentHandling.Skip
-    let x = JsonSerializer.Deserialize<ExtraInputFileConfigJson>(stream, opt) |> fun a -> a.ExtraInputFileConfig
-    x.InputFolderName |> printfn "%s"
+
+    // read Config from Json
+    let extraInput =
+      use stream = new FileStream(fp_jsonc,FileMode.Open,FileAccess.Read)
+      let opt = JsonSerializerOptions()
+      opt.ReadCommentHandling <- JsonCommentHandling.Skip
+      JsonSerializer.Deserialize<ExtraInputJson>(stream, opt) |> fun a -> a.ExtraInput
+
+    extraInput.ExtraInputFileConfig.LimitRecords.Value |> printfn "%d"
 
   }
   |> Async.RunSynchronously
@@ -158,5 +176,5 @@ module Foo =
 
 output(console)
 ```
-./Foo
+9999
 ```

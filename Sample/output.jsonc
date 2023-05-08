@@ -1,26 +1,26 @@
 {
 
     "ExtraOutputFileConfig" : {
-        "OutputFolderName"         : "./"
-      , "OutputFileNameDateFormat" : null // add file format at file name e.g. "yyyyMMdd_HHmmss"
+        "OutputFileNameDateFormat" : null // add file format at file name e.g. "yyyyMMdd_HHmmss"
       , "isPrefixDateFormat"       : true // true: prefix, false : suffix
     }
 
     ,
 
-    "outputFileConfig" : {
-        "OutputFileName"                 : "animal.csv"
-      , "CodePage"                       : 65001  // utf8:65001, sjis:932
-      , "NewLineAppened"                 : false  // add New Line at last record if true
-      , "TextAppended"                   : null   // e.g. "EOF"
-      , "IsAppend"                       : false
-      , "LeaveOpen"                      : false
+    "OutputFileConfig" : {
+        "OutputFolderName" : "./"
+      , "OutputFileName"   : "animal.csv"
+      , "CodePage"         : 65001  // utf8:65001, sjis:932
+      , "NewLineAppened"   : false  // add New Line at last record if true
+      , "TextAppended"     : null   // e.g. "EOF"
+      , "IsAppend"         : false
+      , "LeaveOpen"        : false
     }
 
     ,
 
     // null is defalut
-    "csvHelperWriterConfig": {
+    "CsvHelperWriterConfig": {
         "AllowComments"                       : null // default is true
       , "BufferSize"                          : null // default is 0x1000
       , "Comment"                             : null // default is #

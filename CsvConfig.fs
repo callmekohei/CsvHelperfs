@@ -12,6 +12,7 @@ open System
 [<CLIMutable>]
 type OutputFileConfig =
   {
+    mutable OutputFolderName : string
     mutable OutputFileName   : string
     CodePage                 : int
     NewLineAppened           : bool
@@ -23,25 +24,26 @@ type OutputFileConfig =
 [<CLIMutable>]
 type InputFileConfig =
   {
-    InputFileNameRegexPattern : string
-    CodePage                  : Nullable<int>
-    LeaveOpen                 : Nullable<bool>
-    SkipRows                  : Nullable<int>
+    InputFolderName : string
+    InputFileName   : string
+    CodePage        : Nullable<int>
+    LeaveOpen       : Nullable<bool>
+    SkipRows        : Nullable<int>
   }
 
 
 [<CLIMutable>]
 type CsvWriteInfo =
   {
-    outputFileConfig      : OutputFileConfig
-    csvHelperWriterConfig : CsvHelperWriterConfig
+    OutputFileConfig      : OutputFileConfig
+    CsvHelperWriterConfig : CsvHelperWriterConfig
   }
 
 
 [<CLIMutable>]
 type CsvReadInfo =
   {
-    inputFileConfig       : InputFileConfig
-    inputErrorFileConfig  : CsvWriteInfo
-    csvHelperReaderConfig : CsvHelperReaderConfig
+    InputFileConfig       : InputFileConfig
+    InputErrorFileConfig  : CsvWriteInfo
+    CsvHelperReaderConfig : CsvHelperReaderConfig
   }

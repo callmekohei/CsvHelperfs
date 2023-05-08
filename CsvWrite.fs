@@ -24,7 +24,7 @@ module CsvWrite =
 
       let i = ref 0
       let total = rcds |> Seq.length
-      let addLastNewLine = cfg.outputFileConfig.NewLineAppened
+      let addLastNewLine = cfg.OutputFileConfig.NewLineAppened
 
       let writeRecord (rcd:'T ) =
         async {
@@ -66,11 +66,11 @@ module CsvWrite =
       else
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance)
-        use streamWriter = new StreamWriter( outputFilepath, csvWriteInfo.outputFileConfig.IsAppend , Encoding.GetEncoding( csvWriteInfo.outputFileConfig.CodePage  ) )
-        use csvWriter    = new CsvWriter( streamWriter, CsvHelperConfig.csvWriterConfigImpl csvWriteInfo.csvHelperWriterConfig , csvWriteInfo.outputFileConfig.LeaveOpen)
+        use streamWriter = new StreamWriter( outputFilepath, csvWriteInfo.OutputFileConfig.IsAppend , Encoding.GetEncoding( csvWriteInfo.OutputFileConfig.CodePage  ) )
+        use csvWriter    = new CsvWriter( streamWriter, CsvHelperConfig.csvWriterConfigImpl csvWriteInfo.CsvHelperWriterConfig , csvWriteInfo.OutputFileConfig.LeaveOpen)
 
         // header
-        if  csvWriteInfo.csvHelperWriterConfig.HasHeaderRecord
+        if  csvWriteInfo.CsvHelperWriterConfig.HasHeaderRecord
         then
           rcds
           |> Array.item 0
@@ -81,8 +81,8 @@ module CsvWrite =
         do! rcds |> writeCsvByHand csvWriteInfo csvWriter
 
         // text appended
-        if csvWriteInfo.outputFileConfig.TextAppended |> System.String.IsNullOrEmpty |> not
-        then csvWriter.WriteRecord({|x=csvWriteInfo.outputFileConfig.TextAppended|})
+        if csvWriteInfo.OutputFileConfig.TextAppended |> System.String.IsNullOrEmpty |> not
+        then csvWriter.WriteRecord({|x=csvWriteInfo.OutputFileConfig.TextAppended|})
 
     }
 
@@ -102,15 +102,15 @@ module CsvWrite =
       else
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance)
-        use streamWriter = new StreamWriter( outputFilepath, csvWriteInfo.outputFileConfig.IsAppend , Encoding.GetEncoding( csvWriteInfo.outputFileConfig.CodePage  ) )
-        use csvWriter    = new CsvWriter( streamWriter, CsvHelperConfig.csvWriterConfigImpl csvWriteInfo.csvHelperWriterConfig , csvWriteInfo.outputFileConfig.LeaveOpen)
+        use streamWriter = new StreamWriter( outputFilepath, csvWriteInfo.OutputFileConfig.IsAppend , Encoding.GetEncoding( csvWriteInfo.OutputFileConfig.CodePage  ) )
+        use csvWriter    = new CsvWriter( streamWriter, CsvHelperConfig.csvWriterConfigImpl csvWriteInfo.CsvHelperWriterConfig , csvWriteInfo.OutputFileConfig.LeaveOpen)
 
         // set ClassMap if exists
         if isNull typeof<'U>.BaseType.BaseType |> not
         then csvWriter.Context.RegisterClassMap<'U>() |> ignore
 
         // header
-        if  csvWriteInfo.csvHelperWriterConfig.HasHeaderRecord
+        if  csvWriteInfo.CsvHelperWriterConfig.HasHeaderRecord
         then
           csvWriter.WriteHeader<'T>()
           do! csvWriter.NextRecordAsync() |> Async.AwaitTask
@@ -119,7 +119,7 @@ module CsvWrite =
         do! rcds |> writeCsvByHand csvWriteInfo csvWriter
 
         // text appended
-        if csvWriteInfo.outputFileConfig.TextAppended |> System.String.IsNullOrEmpty |> not
-        then csvWriter.WriteRecord({|x=csvWriteInfo.outputFileConfig.TextAppended|})
+        if csvWriteInfo.OutputFileConfig.TextAppended |> System.String.IsNullOrEmpty |> not
+        then csvWriter.WriteRecord({|x=csvWriteInfo.OutputFileConfig.TextAppended|})
 
     }
